@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.example.CarMapper">
+    <insert id="insertCar">
+        insert into t_car(id,car_num,brand,guide_price,produce_time,car_type) values (null,'100','丰田',20.0,'2023-01-26','燃油车')
+    </insert>
+</mapper>
