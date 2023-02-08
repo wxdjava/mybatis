@@ -14,7 +14,8 @@ import org.apache.ibatis.session.SqlSession;
  * @date 2023/2/3 - 9:40
  */
 public class AccountServiceImpl implements AccountService {
-    private AccountDao accountDao = new AccountDaoImpl();
+    //private AccountDao accountDao = new AccountDaoImpl();
+    private AccountDao accountDao = SqlSessionUtil.openSession().getMapper(AccountDao.class);
     @Override
     public void transfer(String fromActno, String toActno, Double money) throws MoneyNotEnoughException, TransferException {
         SqlSession sqlSession = SqlSessionUtil.openSession();

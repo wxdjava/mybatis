@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="jdbc.properties"></properties>
+    <!--绝对路径加载资源-->
+    <!--<properties url="file:///D://jdbc.properties"></properties>-->
+    <settings>
+        <setting name="logImpl" value="SLF4J"/>
+    </settings>
+    <!--MyBatis中的别名机制-->
+    <typeAliases>
+        <!--别名自己指定的-->
+        <!--所有的别名不区分大小写-->
+        <!--<typeAlias type="com.wxd.mybatis.pojo.Car" alias="Car"></typeAlias>
+        <typeAlias type="com.wxd.mybatis.pojo.Log" alias="Log"></typeAlias>-->
+        <!--采用默认的别名机制-->
+        <!--<typeAlias type="com.wxd.mybatis.pojo.Car"></typeAlias>
+        <typeAlias type="com.wxd.mybatis.pojo.Log"></typeAlias>-->
+        <!--包下所有的类自动起别名，使用简名作为别名-->
+        <package name="com.wxd.mybatis.pojo"/>
+    </typeAliases>
+    <environments default="mybatisDB">
+        <environment id="mybatisDB">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!--<mapper resource="CarMapper.xml"/>
+        <mapper resource="LogMapper.xml"/>-->
+        <!--使用这种方式的前提：
+                XML文件必须和对应的接口放在一起，名称一致
+        -->
+        <!--<mapper class="com.wxd.mybatis.mapper.CarMapper"></mapper>
+        <mapper class="com.wxd.mybatis.mapper.LogMapper"></mapper>-->
+        
+        <!--下面这种方式是在实际开发中使用的-->
+        <!--前提是：XML文件必须和接口放在一起，并且名字一致-->
+        <package name="com.wxd.mybatis.mapper"/>
+    </mappers>
+</configuration>
