@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxd.mybatis.mapper.CarMapper">
+    <select id="selectTestIf" resultType="Car">
+        select * from t_car where 1 = 1
+        <if test="brand != null and brand != ''">
+            and brand like "%"#{brand}"%"
+        </if>
+        <if test="guidePrice != null and guidePrice != ''">
+            and guide_price > #{guidePrice}
+        </if>
+        <if test="carType != null and carType != ''">
+            and car_type = #{carType}
+        </if>
+    </select>
+
+    <select id="selectTestWhere" resultType="Car">
+        select * from t_car
+        <where>
+            <if test="brand != null and brand != ''">
+                and brand like "%"#{brand}"%"
+            </if>
+            <if test="guidePrice != null and guidePrice != ''">
+                and guide_price > #{guidePrice}
+            </if>
+            <if test="carType != null and carType != ''">
+                and car_type = #{carType}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTestTrim" resultType="Car">
+        select * from t_car
+        <trim prefix="where" suffixOverrides="and">
+            <if test="brand != null and brand != ''">
+                brand like "%"#{brand}"%" and
+            </if>
+            <if test="guidePrice != null and guidePrice != ''">
+                guide_price > #{guidePrice} and
+            </if>
+            <if test="carType != null and carType != ''">
+                car_type = #{carType}
+            </if>
+        </trim>
+    </select>
+
+    <update id="updateTestSet">
+        update t_car
+        <set>
+            <if test="carNum != null and carnum != ''">car_num = #{carNum},</if>
+            <if test="brand != null and brand != ''">brand = #{brand},</if>
+            <if test="guidePrice != null and guidePrice != ''">guide_price = #{guidePrice},</if>
+            <if test="produceTime != null and produceTime != ''">produce_time = #{produceTime},</if>
+            <if test="carType != null and carType != ''">car_type = #{carType},</if>
+        </set>
+        where
+            id = #{id}
+    </update>
+
+    <select id="selectTestChoose" resultType="Car">
+        select * from t_car
+        <where>
+            <choose>
+                <when test="brand != null and brand != ''">brand like "%"#{brand}"%"</when>
+                <when test="guidePrice != null and guidePrice != ''">guide_price = #{guidePrice}</when>
+                <otherwise>car_type = #{carType}</otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <delete id="deleteTestForeach">
+        delete from t_car where id in(
+            <foreach collection="ids" item="id" separator=",">
+                #{id}
+            </foreach>
+            )
+    </delete>
+
+    <delete id="deleteTestForeach2">
+        delete from t_car where
+        <foreach collection="ids" item="id" separator="or">
+            id = #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insertTestForeach">
+        insert into t_car values
+        <foreach collection="cars" item="car" separator=",">
+            (null,#{car.carNum},#{car.brand},#{car.guidePrice},#{car.produceTime},#{car.carType})
+        </foreach>
+    </insert>
+
+    <sql id="CarColumnName">
+        id,car_num as carNum,brand,guide_price as guidePrice,produce_time as produceTime,car_type as carType
+    </sql>
+    <select id="selectTestSqlAndInclude" resultType="Car">
+        select 
+        <include refid="CarColumnName" />
+        from t_car where car_type=#{carType}
+    </select>
+</mapper>

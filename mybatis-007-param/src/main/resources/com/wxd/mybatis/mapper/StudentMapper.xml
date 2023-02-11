@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxd.mybatis.mapper.StudentMapper">
+    <select id="selectByDate" resultType="student">
+        select * from t_student where birth=#{date};
+    </select>
+
+    <select id="selectBySex" resultType="student">
+        select * from t_student where sex=#{sex};
+    </select>
+
+    <insert id="insertStudentByMap">
+        insert into t_student values (null,#{name},#{age},#{height},#{birth},#{sex})
+    </insert>
+
+    <!--有两种方式-->
+    <!--select * from t_student where name = #{arg0} and sex = #{arg1}-->
+    <!--select * from t_student where name = #{param1} and sex = #{param2}-->
+    <!--arg从0开始  param从1开始-->
+    <select id="selectByNameAndSex" resultType="student">
+        select * from t_student where name = #{param1} and sex = #{param2}
+    </select>
+
+    <!--使用param注解-->
+    <!--select * from t_student where name = #{arg0} and sex = #{arg1}  不可用-->
+    <!--select * from t_student where name = #{param1} and sex = #{param2}  可用-->
+    <select id="selectByNameAndSexParam" resultType="student">
+        select * from t_student where name = #{name} and sex = #{sex}
+    </select>
+</mapper>

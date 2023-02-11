@@ -1,4 +1,4 @@
-package com.wxd.mybatis;
+package com.wxd.mybatis.test;
 
 import com.wxd.mybatis.mapper.CarMapper;
 import com.wxd.mybatis.pojo.Car;
@@ -6,18 +6,50 @@ import com.wxd.mybatis.utils.SqlSessionUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 
+import javax.xml.transform.Source;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wangxuedeng
- * @date 2023/2/5 - 11:18
+ * @date 2023/2/9 - 22:10
  */
 public class CarMapperTest {
+
     @Test
-    public void testSelectByCarType(){
+    public void testSelectByIdRetMap(){
         SqlSession sqlSession = SqlSessionUtil.openSession();
         CarMapper mapper = sqlSession.getMapper(CarMapper.class);
-        List<Car> cars = mapper.selectByCarType("新能源");
+        Map<String,Object> carMap = mapper.selectByIdRetMap(33L);
+        System.out.println(carMap);
+        sqlSession.close();
+    }
+
+    @Test
+    public void testSelectAllRetMap(){
+        SqlSession sqlSession = SqlSessionUtil.openSession();
+        CarMapper mapper = sqlSession.getMapper(CarMapper.class);
+        List<Map<String,Object>> maps =  mapper.selectAllRetMap();
+        maps.forEach(map -> {
+            System.out.println(map);
+        });
+        sqlSession.close();
+    }
+
+    @Test
+    public void selectAllRetBigMap(){
+        SqlSession sqlSession = SqlSessionUtil.openSession();
+        CarMapper mapper = sqlSession.getMapper(CarMapper.class);
+        Map<Long,Map<String,Object>> map = mapper.selectAllRetBigMap();
+        System.out.println(map);
+        sqlSession.close();
+    }
+
+    @Test
+    public void testSelectAllByResultMap(){
+        SqlSession sqlSession = SqlSessionUtil.openSession();
+        CarMapper mapper = sqlSession.getMapper(CarMapper.class);
+        List<Car> cars = mapper.selectAllByResultMap();
         cars.forEach(car -> {
             System.out.println(car);
         });
@@ -25,10 +57,10 @@ public class CarMapperTest {
     }
 
     @Test
-    public void testSelectByTime(){
+    public void testMapUnderscoreToCamelCase(){
         SqlSession sqlSession = SqlSessionUtil.openSession();
         CarMapper mapper = sqlSession.getMapper(CarMapper.class);
-        List<Car> cars = mapper.selectByTime("desc");
+        List<Car> cars = mapper.selectByMapUnderscoreToCamelCase();
         cars.forEach(car -> {
             System.out.println(car);
         });
@@ -36,49 +68,11 @@ public class CarMapperTest {
     }
 
     @Test
-    public void testDeleteByBrand(){
+    public void testSelectAllRetTotal(){
         SqlSession sqlSession = SqlSessionUtil.openSession();
         CarMapper mapper = sqlSession.getMapper(CarMapper.class);
-        int count = mapper.deleteByBrand("QQ");
-        System.out.println(count);
-        sqlSession.commit();
-        sqlSession.close();
-    }
-
-    @Test
-    public void testDeleteById(){
-        SqlSession sqlSession = SqlSessionUtil.openSession();
-        CarMapper mapper = sqlSession.getMapper(CarMapper.class);
-        int count = mapper.deleteById("26,27");
-        System.out.println(count);
-        sqlSession.commit();
-        sqlSession.close();
-    }
-
-    @Test
-    public void testselectByLikeBrand(){
-        /*
-        *'%${brand}%'
-        *concat('%',#{brand},'%')
-        * "%"#{brand}"%"
-        */
-        SqlSession sqlSession = SqlSessionUtil.openSession();
-        CarMapper mapper = sqlSession.getMapper(CarMapper.class);
-        List<Car> cars = mapper.selectByLikeBrand("宝马");
-        cars.forEach(car -> {
-            System.out.println(car);
-        });
-        sqlSession.close();
-    }
-
-    @Test
-    public void testInsertCarUseGenerateKeys(){
-        SqlSession sqlSession = SqlSessionUtil.openSession();
-        CarMapper mapper = sqlSession.getMapper(CarMapper.class);
-        Car car = new Car(null, "1001", "红旗", 30.0, "2023-02-09", "新能源");
-        int count = mapper.insertCarUseGenerateKeys(car);
-        System.out.println(car);
-        sqlSession.commit();
+        Long total = mapper.selectAllRetTotal();
+        System.out.println(total);
         sqlSession.close();
     }
 }

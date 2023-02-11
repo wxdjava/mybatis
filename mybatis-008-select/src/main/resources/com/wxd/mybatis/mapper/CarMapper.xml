@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxd.mybatis.mapper.CarMapper">
+    <select id="selectByIdRetMap" resultType="map">
+        select * from t_car where id = #{id}
+    </select>
+
+    <select id="selectAllRetMap" resultType="map">
+        select * from t_car
+    </select>
+
+    <select id="selectAllRetBigMap" resultType="map">
+        select * from t_car
+    </select>
+
+    <resultMap id="selectResultMap" type="car">
+        <id property="id" column="id"></id>
+        <result property="carName" column="car_name"></result>
+        <result property="brand" column="brand"></result>
+        <result property="guidePrice" column="guide_price"></result>
+        <result property="produceTime" column="produce_time"></result>
+        <result property="carType" column="car_type"></result>
+    </resultMap>
+    <select id="selectAllByResultMap" resultMap="selectResultMap">
+        select * from t_car
+    </select>
+
+    <select id="selectByMapUnderscoreToCamelCase" resultType="car">
+        select * from t_car
+    </select>
+
+    <select id="selectAllRetTotal" resultType="long">
+        select count(*) from t_car
+    </select>
+</mapper>

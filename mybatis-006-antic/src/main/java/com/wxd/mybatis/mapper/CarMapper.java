@@ -14,4 +14,6 @@ public interface CarMapper {
     int deleteByBrand(String brand);
     int deleteById(String id);
     List<Car> selectByLikeBrand(String brand);
+    int insertCarUseGenerateKeys(Car car);
+
 }
